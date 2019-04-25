@@ -26,7 +26,20 @@ namespace XpuctAPP
         private void button1_Click(object sender, EventArgs e)
         {
 
-            Process.Start(new ProcessStartInfo());
+          Process process =  Process.Start(new ProcessStartInfo
+            {
+                FileName = "cmd",
+                Arguments = "/c time /t",
+                RedirectStandardOutput = true,
+                WindowStyle = ProcessWindowStyle.Hidden
+                
+
+            });
+            label1.Text = process.ToString();
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
 
         }
     }
