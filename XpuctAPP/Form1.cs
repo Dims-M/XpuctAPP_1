@@ -28,11 +28,18 @@ namespace XpuctAPP
         {
            
 
-            if(Test())
-            {
+           // if(Test())
+           // {
                 // DeleteFail(path); // удаление
-                CoppyFail(path, pathSavee);
-            }
+                // CoppyFail(path, pathSavee); //копирование с зпменной файла
+                // PeremeshenieFail(path, pathSavee); // перенос файла с заменной
+                //CreateFile(@"C:\Users\Dim\Desktop\temp");
+                // readFile(path); // прочитать из файла
+              //  ZapisWraitFile();
+
+
+
+          //  }
 
 
         }
@@ -66,6 +73,9 @@ namespace XpuctAPP
 
         string path = @"C:\Users\Dim\Desktop\1233.txt";
         string pathSavee = @"C:\Users\Dim\Desktop\1233\saveFile.txt";
+        string pathЬщмуу = @"C:\Users\Dim\Desktop\1233\temp.txt";
+
+        #region Старые методы
 
         public bool Test()
         {
@@ -98,13 +108,18 @@ namespace XpuctAPP
             label1.Text = " ";
         }
 
-
+        /// <summary>
+        /// Коппирование с заменной файла
+        /// </summary>
+        /// <param name="SorcePath_">Какой файл копируем</param>
+        /// <param name="SavePath">Куда файл копируем</param>
        public void CoppyFail(string SorcePath_, string SavePath)
         {
             try
             {
-                File.Copy(SorcePath_, SavePath);
+                File.Copy(SorcePath_, SavePath, true); // с перезаписью файла
                 textBox1.Text = $"Копировали  из {SorcePath_} в {SavePath}";
+
             }
             catch(Exception ex)
             {
@@ -113,6 +128,24 @@ namespace XpuctAPP
             
         }
 
+        /// <summary>
+        /// Перемещение файла с заменнной
+        /// </summary>
+        /// <param name="SorcePath_"></param>
+        /// <param name="SavePath"></param>
+        public void PeremeshenieFail(string SorcePath_, string SavePath)
+        {
+            try
+            {
+                File.Copy(SorcePath_, SavePath, true); // с перезаписью файла
+                textBox1.Text = $"Переместили фал  из {SorcePath_} в {SavePath}";
+
+            }
+            catch (Exception ex)
+            {
+                textBox1.Text = $"ОШИБКА  При перемещении файла \t\n {ex}";
+            }
+        }
 
         /// <summary>
         /// Удаляем файл
@@ -132,6 +165,63 @@ namespace XpuctAPP
             }
         }
 
+        /// <summary>
+        /// Создание папки категории
+        /// </summary>
+        /// <param name="path">Путьдля создания нужной папки</param>
+        /// <returns></returns>
+       public bool CreateFile(string path)
+        {
+            bool otvet = false;
+            try
+            {
+                Directory.CreateDirectory(path);
+                otvet = true;
+                textBox1.Text = $"Созданна котегория {path}";
+
+            }
+            catch(Exception ex)
+            {
+                textBox1.Text = $"ОШИБКА  При создании категории \t\n {ex}";
+
+            }
+           
+
+            return otvet;
+        }
+
+       public void readFile(string path)
+        {
+           string textt= File.ReadAllText(path);
+
+            textBox1.Text = textt;
+
+        }
+
+        /// <summary>
+        /// Запис в файл. С указанием места создания и записи
+        /// </summary>
+        public void ZapisWraitFile()
+        {
+            List<string> ts = new List<string>();
+            var a = $"{ textBox1.Text } \n";
+
+            ts.Add(a);
+
+          //  var ff = new string[] {a};
+
+            try
+            {
+                File.WriteAllLines(pathЬщмуу, ts);
+                
+            }
+            catch(Exception ex)
+            {
+                textBox1.Text = $"ОШИБКА  При записи файла \t\n {ex}";
+            }
+        }
+
+
       public  string PoluchenieDataTime()
         {
           //  DateTime dateTime = new DateTime();
@@ -141,6 +231,7 @@ namespace XpuctAPP
             return dateTime;
         }
 
+        #endregion 
         //Кнопка выход
         private void Button3_Click(object sender, EventArgs e)
         {
