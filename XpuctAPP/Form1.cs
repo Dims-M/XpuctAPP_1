@@ -26,8 +26,13 @@ namespace XpuctAPP
 
         private void button1_Click(object sender, EventArgs e)
         {
+           
 
-            Test();
+            if(Test())
+            {
+                // DeleteFail(path); // удаление
+                CoppyFail(path, pathSavee);
+            }
 
 
         }
@@ -59,9 +64,14 @@ namespace XpuctAPP
             //в лэйбл записываем полученные данные из консоли.
         }
 
-        public void Test()
+        string path = @"C:\Users\Dim\Desktop\1233.txt";
+        string pathSavee = @"C:\Users\Dim\Desktop\1233\saveFile.txt";
+
+        public bool Test()
         {
-            string path = @"C:\Users\Dim\Desktop\1233.txt";
+            bool marker = false;
+
+           // string path = @"C:\Users\Dim\Desktop\1233.txt";
 
             string path1 = textBox1.Text;
 
@@ -69,6 +79,7 @@ namespace XpuctAPP
             {
                 textBox1.Text = "Данный файл существует!";
                 label1.Text = PoluchenieDataTime();
+                marker = true;
             }
             
             else
@@ -77,12 +88,48 @@ namespace XpuctAPP
                  label1.Text = PoluchenieDataTime();
             }
 
+            return marker;
         }
 
+        //Кнопка очистки окон
         private void Button2_Click(object sender, EventArgs e)
         {
             textBox1.Text = " ";
             label1.Text = " ";
+        }
+
+
+       public void CoppyFail(string SorcePath_, string SavePath)
+        {
+            try
+            {
+                File.Copy(SorcePath_, SavePath);
+                textBox1.Text = $"Копировали  из {SorcePath_} в {SavePath}";
+            }
+            catch(Exception ex)
+            {
+                textBox1.Text = $"ОШИБКА  При копировании файла \t\n {ex}";
+            }
+            
+        }
+
+
+        /// <summary>
+        /// Удаляем файл
+        /// </summary>
+        /// <param name="path_">Путь к файлу</param>
+        public void DeleteFail(string path_)
+        {
+            try
+            {
+                File.Delete(path_);
+                textBox1.Text = $"Произошло Удаление файла \t\n {path_}";
+            }
+
+            catch(Exception ex)
+            {
+                textBox1.Text = $"ОШИБКА \t\n {ex}";
+            }
         }
 
       public  string PoluchenieDataTime()
@@ -92,6 +139,12 @@ namespace XpuctAPP
            string dateTime = DateTime.Now.ToString();
 
             return dateTime;
+        }
+
+        //Кнопка выход
+        private void Button3_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }
