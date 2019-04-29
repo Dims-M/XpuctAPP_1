@@ -12,6 +12,8 @@ using System.Windows.Forms;
 
 namespace XpuctAPP
 {
+
+    delegate int DelegatSumInt(int x, int y);
     public partial class Form1 : Form
     {
         public Form1()
@@ -26,20 +28,28 @@ namespace XpuctAPP
 
         private void button1_Click(object sender, EventArgs e)
         {
-           
-
-           // if(Test())
-           // {
-                // DeleteFail(path); // удаление
-                // CoppyFail(path, pathSavee); //копирование с зпменной файла
-                // PeremeshenieFail(path, pathSavee); // перенос файла с заменной
-                //CreateFile(@"C:\Users\Dim\Desktop\temp");
-                // readFile(path); // прочитать из файла
-              //  ZapisWraitFile();
 
 
+            // if(Test())
+            // {
+            // DeleteFail(path); // удаление
+            // CoppyFail(path, pathSavee); //копирование с зпменной файла
+            // PeremeshenieFail(path, pathSavee); // перенос файла с заменной
+            //CreateFile(@"C:\Users\Dim\Desktop\temp");
+            // readFile(path); // прочитать из файла
+            //  ZapisWraitFile();
 
-          //  }
+
+            //Чтение файла с помощью стрима
+
+            //Работа с делегатом и лямба функциями.
+            // StartLambaMetoht();
+           // chenueFailaStream();
+            //запись в файл.
+            ZapisFaila();
+
+
+            //  }
 
 
         }
@@ -72,6 +82,7 @@ namespace XpuctAPP
         }
 
         string path = @"C:\Users\Dim\Desktop\1233.txt";
+        string path1 = @"C:\Users\Dim\Desktop\29599998716.pdf";
         string pathSavee = @"C:\Users\Dim\Desktop\1233\saveFile.txt";
         string pathЬщмуу = @"C:\Users\Dim\Desktop\1233\temp.txt";
 
@@ -81,7 +92,7 @@ namespace XpuctAPP
         {
             bool marker = false;
 
-           // string path = @"C:\Users\Dim\Desktop\1233.txt";
+            // string path = @"C:\Users\Dim\Desktop\1233.txt";
 
             string path1 = textBox1.Text;
 
@@ -91,11 +102,11 @@ namespace XpuctAPP
                 label1.Text = PoluchenieDataTime();
                 marker = true;
             }
-            
+
             else
             {
                 textBox1.Text = "Данный файл не существует!";
-                 label1.Text = PoluchenieDataTime();
+                label1.Text = PoluchenieDataTime();
             }
 
             return marker;
@@ -113,7 +124,7 @@ namespace XpuctAPP
         /// </summary>
         /// <param name="SorcePath_">Какой файл копируем</param>
         /// <param name="SavePath">Куда файл копируем</param>
-       public void CoppyFail(string SorcePath_, string SavePath)
+        public void CoppyFail(string SorcePath_, string SavePath)
         {
             try
             {
@@ -121,11 +132,11 @@ namespace XpuctAPP
                 textBox1.Text = $"Копировали  из {SorcePath_} в {SavePath}";
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 textBox1.Text = $"ОШИБКА  При копировании файла \t\n {ex}";
             }
-            
+
         }
 
         /// <summary>
@@ -159,7 +170,7 @@ namespace XpuctAPP
                 textBox1.Text = $"Произошло Удаление файла \t\n {path_}";
             }
 
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 textBox1.Text = $"ОШИБКА \t\n {ex}";
             }
@@ -170,7 +181,7 @@ namespace XpuctAPP
         /// </summary>
         /// <param name="path">Путьдля создания нужной папки</param>
         /// <returns></returns>
-       public bool CreateFile(string path)
+        public bool CreateFile(string path)
         {
             bool otvet = false;
             try
@@ -180,19 +191,19 @@ namespace XpuctAPP
                 textBox1.Text = $"Созданна котегория {path}";
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 textBox1.Text = $"ОШИБКА  При создании категории \t\n {ex}";
 
             }
-           
+
 
             return otvet;
         }
 
-       public void readFile(string path)
+        public void readFile(string path)
         {
-           string textt= File.ReadAllText(path);
+            string textt = File.ReadAllText(path);
 
             textBox1.Text = textt;
 
@@ -208,32 +219,79 @@ namespace XpuctAPP
 
             ts.Add(a);
 
-          //  var ff = new string[] {a};
+            //  var ff = new string[] {a};
 
             try
             {
                 File.WriteAllLines(pathЬщмуу, ts);
-                
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 textBox1.Text = $"ОШИБКА  При записи файла \t\n {ex}";
             }
         }
 
 
-      public  string PoluchenieDataTime()
-        {
-          //  DateTime dateTime = new DateTime();
+        #endregion
 
-           string dateTime = DateTime.Now.ToString();
+        /// <summary>
+        /// Получение даты и времени.
+        /// </summary>
+        /// <returns></returns>
+        public string PoluchenieDataTime()
+        {
+            //  DateTime dateTime = new DateTime();
+
+            string dateTime = DateTime.Now.ToString();
 
             return dateTime;
         }
 
-        #endregion 
-       
+        /// <summary>
+        /// Чтение из текстового файла. С помощью StreamReader
+        /// </summary>
+        public void chenueFailaStream()
+        {
+
+        using(StreamReader reader = new StreamReader(path, Encoding.Default) )
+        {
+
+                //string line;
+                //while ((line = sr.ReadLine()) != null)
+                //{
+                //    Console.WriteLine(line);
+                //}
+
+                 textBox1.Text = reader.ReadToEnd();
+            }
+
+        }
+
+        public void ZapisFaila()
+        {
+            //указываем куда записываем, перезапись, кодировку
+            using(StreamWriter sw = new StreamWriter(pathЬщмуу,true,Encoding.UTF8))
+            {
+                sw.WriteLine(DateTime.Now);
+                sw.WriteLine(textBox1.Text);
+            }
+        }
+
+
+        //лямба методы
+        public void StartLambaMetoht()
+        {
+            textBox1.Text += "Метод делегата. \nСуммируем2 числа ";
+           DelegatSumInt SumaXY = (x, y) => x + y;
+
+            textBox1.Text += $"Результаты сложения:{SumaXY(10,25).ToString()}";
+
+        //список параметров,
+        }
+
         //Кнопка выход
+
         private void Button3_Click(object sender, EventArgs e)
         {
             Close();
