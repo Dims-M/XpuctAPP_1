@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -46,7 +47,10 @@ namespace XpuctAPP
             // StartLambaMetoht();
            // chenueFailaStream();
             //запись в файл.
-            ZapisFaila();
+           // ZapisFaila();
+
+            //Работаем с регуляркой 
+            RabRegex();
 
 
             //  }
@@ -82,6 +86,7 @@ namespace XpuctAPP
         }
 
         string path = @"C:\Users\Dim\Desktop\1233.txt";
+        string path12 = @"C:\Users\Dim\Desktop\reges.txt";
         string path1 = @"C:\Users\Dim\Desktop\29599998716.pdf";
         string pathSavee = @"C:\Users\Dim\Desktop\1233\saveFile.txt";
         string pathЬщмуу = @"C:\Users\Dim\Desktop\1233\temp.txt";
@@ -251,23 +256,25 @@ namespace XpuctAPP
         /// <summary>
         /// Чтение из текстового файла. С помощью StreamReader
         /// </summary>
-        public void chenueFailaStream()
+        public string chenueFailaStream()
+        {
+            string line;
+        using (StreamReader reader = new StreamReader(path12, Encoding.Default) )
         {
 
-        using(StreamReader reader = new StreamReader(path, Encoding.Default) )
-        {
-
-                //string line;
+                line = reader.ReadToEnd(); ;
                 //while ((line = sr.ReadLine()) != null)
                 //{
                 //    Console.WriteLine(line);
                 //}
 
-                 textBox1.Text = reader.ReadToEnd();
+                 textBox1.Text = line;
             }
-
+            return line;
         }
-
+        /// <summary>
+        /// Запись файла в файл(Stream)
+        /// </summary>
         public void ZapisFaila()
         {
             //указываем куда записываем, перезапись, кодировку
@@ -278,6 +285,21 @@ namespace XpuctAPP
             }
         }
 
+        public void RabRegex()
+        {
+
+            //string line = "Какой-то текст, который от другого текста не отличается от другого текст.";
+            string line = chenueFailaStream();
+
+            Regex regex = new Regex("030000000231");
+
+            MatchCollection match = regex.Matches(line);
+
+            textBox1.Text = "\n";
+            string tempZ = $"Количество совпадения: {match.Count.ToString()}";
+            textBox1.Text += tempZ;
+
+        }
 
         //лямба методы
         public void StartLambaMetoht()
