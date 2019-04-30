@@ -64,6 +64,7 @@
             this.textBox1.Location = new System.Drawing.Point(16, 12);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
+            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBox1.Size = new System.Drawing.Size(576, 224);
             this.textBox1.TabIndex = 2;
             // 
@@ -99,10 +100,10 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(16, 315);
+            this.textBox2.Location = new System.Drawing.Point(16, 324);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(148, 40);
+            this.textBox2.Size = new System.Drawing.Size(148, 25);
             this.textBox2.TabIndex = 6;
             // 
             // Form1
@@ -117,6 +118,7 @@
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
+            this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
             this.Text = "Хрень";
