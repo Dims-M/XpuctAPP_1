@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -45,7 +46,7 @@ namespace XpuctAPP
 
             //Работа с делегатом и лямба функциями.
             // StartLambaMetoht();
-             chenueFailaStream(); // выводим 
+            // chenueFailaStream(); // выводим 
             //запись в файл.
             // ZapisFaila();
 
@@ -86,6 +87,7 @@ namespace XpuctAPP
             //в лэйбл записываем полученные данные из консоли.
         }
 
+        string pathZoobr = @"C:\Users\Dim\Desktop\зубр.txt";
         string path = @"C:\Users\Dim\Desktop\1233.txt";
         string path12 = @"C:\Users\Dim\Desktop\reges.txt";
         string path1 = @"C:\Users\Dim\Desktop\29599998716.pdf";
@@ -274,6 +276,22 @@ namespace XpuctAPP
             }
             return line;
         }
+      
+        /// <summary>
+        /// Чтение из текстового файла  С передачей параметра нахождения файла.
+        /// </summary>
+        /// <param name="str">Путь к файлу</param>
+        /// <returns></returns>
+        public string chenueFailaStreamParams(string str)  
+        {
+            string line;
+            using (StreamReader reader = new StreamReader(str, Encoding.Default))
+            {
+                line = reader.ReadToEnd(); ;
+            }
+            return line;
+        }
+
         /// <summary>
         /// Запись файла в файл(Stream)
         /// </summary>
@@ -349,8 +367,31 @@ namespace XpuctAPP
             string tempZ123 = $"Ищем в {tempZnach}\nКоличество замененных побелов: {znach1}";
 
             ZapisFailaParams(path, tempZ);
-            ZapisFailaParams(path, tempZ123);
+            //ZapisFailaParams(path, tempZ123); // записть в лог
 
+        }
+
+        public void RabRegexInZnach2()
+        {
+           string tempSorse = chenueFailaStreamParams(pathZoobr);
+
+            string tempZnach = new Regex(@"\s+").Replace(tempSorse,","); //Ищем все пробелы которые больше 1-го и заменяем их на 1 пробел " " 
+
+            textBox1.Text = tempZnach;
+        }
+
+
+        public void ParseCorsDolarsRegex()
+        {
+            string line;
+            string datee = DateTime.Now.ToLongTimeString().ToString();
+            string nameFile = "XML_daily_" + "datee" + ".xml";
+            using (WebClient wc = new WebClient() )
+            {
+                line = wc.DownloadString("http://www.cbr.ru/scripts/XML_daily.asp");
+                wc.DownloadFile("http://www.cbr.ru/scripts/XML_daily.asp", nameFile);
+            }
+            label1.Text = line;
         }
 
         //лямба методы
@@ -374,7 +415,10 @@ namespace XpuctAPP
         //Кнопка найти
         private void Button4_Click(object sender, EventArgs e)
         {
-            RabRegexInZnach();
+            //RabRegexInZnach(); // п
+            //RabRegexInZnach2();
+
+            ParseCorsDolarsRegex(); // Спасрить данные по api 
         }
     }
 }
