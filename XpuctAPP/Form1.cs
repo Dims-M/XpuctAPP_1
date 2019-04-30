@@ -45,12 +45,13 @@ namespace XpuctAPP
 
             //Работа с делегатом и лямба функциями.
             // StartLambaMetoht();
-           // chenueFailaStream();
+             chenueFailaStream(); // выводим 
             //запись в файл.
-           // ZapisFaila();
+            // ZapisFaila();
 
             //Работаем с регуляркой 
-            RabRegex();
+            // RabRegex(); // значения по умолчанию.
+          //  RabRegexInZnach(); 
 
 
             //  }
@@ -285,6 +286,19 @@ namespace XpuctAPP
             }
         }
 
+        public void ZapisFailaParams(string pah_, string textContent)
+        {
+            //указываем куда записываем, перезапись, кодировку
+            using (StreamWriter sw = new StreamWriter(pah_, true, Encoding.UTF8))
+            {
+                sw.WriteLine(DateTime.Now);
+                sw.WriteLine(textContent);
+            }
+        }
+
+        /// <summary>
+        ///Регулярный метод №1 поиск по маске
+        /// </summary>
         public void RabRegex()
         {
 
@@ -298,6 +312,32 @@ namespace XpuctAPP
             textBox1.Text = "\n";
             string tempZ = $"Количество совпадения: {match.Count.ToString()}";
             textBox1.Text += tempZ;
+
+            
+        }
+
+        /// <summary>
+        /// Поиск с помощью регулярного выражения
+        /// </summary>
+        public void RabRegexInZnach()
+        {
+            //где ищем
+            string line = chenueFailaStream();
+
+            //Что ищем
+            string tempZnach = textBox2.Text;
+
+            //маска поиска
+            Regex regex = new Regex(tempZnach);
+
+           // сохраняем результат поиска
+            MatchCollection match = regex.Matches(line);
+
+            //сохранение и вывод полученных  значений
+            textBox1.Text = "\n";
+            string tempZ = $"Искомое {tempZnach}\nКоличество совпадения: {match.Count.ToString()}";
+            textBox1.Text += tempZ;
+            ZapisFailaParams(path, tempZ);
 
         }
 
@@ -317,6 +357,12 @@ namespace XpuctAPP
         private void Button3_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        //Кнопка найти
+        private void Button4_Click(object sender, EventArgs e)
+        {
+            RabRegexInZnach();
         }
     }
 }
