@@ -257,7 +257,8 @@ namespace XpuctAPP
         /// <summary>
         /// Чтение из текстового файла. С помощью StreamReader
         /// </summary>
-        public string chenueFailaStream()
+        public string chenueFailaStream
+            ()
         {
             string line;
         using (StreamReader reader = new StreamReader(path12, Encoding.Default) )
@@ -337,7 +338,18 @@ namespace XpuctAPP
             textBox1.Text = "\n";
             string tempZ = $"Искомое {tempZnach}\nКоличество совпадения: {match.Count.ToString()}";
             textBox1.Text += tempZ;
+
+            //поиск пробелов > 1
+           // string pattern = @"\s+"; //ищем пробелы которые больше 1.
+            string pattern = @"\s+"; //ищем пробелы которые больше 1.
+            //string zamenProbel = " "; //на что заменяем
+            string zamenProbel = " *"; //на что заменяем
+            Regex regex1 = new Regex(pattern);
+            string znach1 = regex1.Replace(line,zamenProbel); //где ищим, на что меняем
+            string tempZ123 = $"Ищем в {tempZnach}\nКоличество замененных побелов: {znach1}";
+
             ZapisFailaParams(path, tempZ);
+            ZapisFailaParams(path, tempZ123);
 
         }
 
