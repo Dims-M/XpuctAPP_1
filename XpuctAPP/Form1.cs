@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -24,24 +25,47 @@ namespace XpuctAPP
 
         }
 
+        /// <summary>
+        /// Тестовая кнопка
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
-           
-
-           // if(Test())
-           // {
-                // DeleteFail(path); // удаление
-                // CoppyFail(path, pathSavee); //копирование с зпменной файла
-                // PeremeshenieFail(path, pathSavee); // перенос файла с заменной
-                //CreateFile(@"C:\Users\Dim\Desktop\temp");
-                // readFile(path); // прочитать из файла
-              //  ZapisWraitFile();
 
 
+            // if(Test())
+            // {
+            // DeleteFail(path); // удаление
+            // CoppyFail(path, pathSavee); //копирование с зпменной файла
+            // PeremeshenieFail(path, pathSavee); // перенос файла с заменной
+            //CreateFile(@"C:\Users\Dim\Desktop\temp");
+            // readFile(path); // прочитать из файла
+            //  ZapisWraitFile();
 
-          //  }
+            //Работа с  потоками
+             rabS_Thread(); // ошибка
+            // rabS_Thread2(); //Работает
 
 
+            //new Thread(() =>
+            //{
+            //    label1.Text = "12356";
+            //}).Start();
+
+        
+
+        }
+
+
+
+
+        /// <summary>
+        /// Метод для передачи в потоке
+        /// </summary>
+        private void rabS_Thread2()
+        {
+            label1?.Invoke(new Action(() => { textBox1.Text = testMetoch(); }));
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -74,6 +98,46 @@ namespace XpuctAPP
         string path = @"C:\Users\Dim\Desktop\1233.txt";
         string pathSavee = @"C:\Users\Dim\Desktop\1233\saveFile.txt";
         string pathЬщмуу = @"C:\Users\Dim\Desktop\1233\temp.txt";
+
+        //Заметка по Потоками Задачам
+        //https://ru.stackoverflow.com/questions/418461/%D0%A0%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%D1%81-%D0%BA%D0%BE%D0%BD%D1%82%D1%80%D0%BE%D0%BB%D0%B0%D0%BC%D0%B8-%D0%B8%D0%B7-%D1%84%D0%BE%D0%BD%D0%BE%D0%B2%D0%BE%D0%B3%D0%BE-%D0%BF%D0%BE%D1%82%D0%BE%D0%BA%D0%B0
+
+        void rabS_Thread()
+        {
+            //Образец кода запуска потока
+            new Thread(() =>
+            {
+               // textBox1.Text = "12356";
+                textBox1.Text = testMetoch();
+            }).Start();
+
+            //Thread thread; thread = new Thread(
+            //  // delegate 
+            //  () => // лямба оператор
+            //     {
+            //       textBox1.Text = testMetoch();
+
+            //     }
+            //    );
+           
+
+           // thread.Start();
+            label1.Text = "Работа в отдельном потоке";
+        }
+
+         string testMetoch()
+        {
+            string itog = "";
+            for (byte i = 0; i < 10; i++)
+            {
+                itog += $"{i}";
+                itog += ",";
+                Thread.Sleep(200);
+            }
+            //Console.ReadKey();
+            //_label.Text += "Конец работы с thread";
+           return itog;
+        }
 
         #region Старые методы
 
