@@ -48,14 +48,17 @@ namespace XpuctAPP
             //  ZapisWraitFile();
 
             //Работа с  потоками
-             rabS_Thread(); // ошибка
+            // rabS_Thread(); // ошибка
             // rabS_Thread2(); //Работает
+            //Запуск в паралеьном потоке
+            rabS_ThreadParaleiniyCall();
+
 
             //Чтение файла с помощью стрима
 
-          //  }
+            //  }
 
-        
+
 
         }
 
@@ -107,29 +110,77 @@ namespace XpuctAPP
         //Заметка по Потоками Задачам
         //https://ru.stackoverflow.com/questions/418461/%D0%A0%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%D1%81-%D0%BA%D0%BE%D0%BD%D1%82%D1%80%D0%BE%D0%BB%D0%B0%D0%BC%D0%B8-%D0%B8%D0%B7-%D1%84%D0%BE%D0%BD%D0%BE%D0%B2%D0%BE%D0%B3%D0%BE-%D0%BF%D0%BE%D1%82%D0%BE%D0%BA%D0%B0
 
+            /// <summary>
+            /// Метод работы с потоками.
+            /// </summary>
         void rabS_Thread()
         {
+            //Если ошибки доступа потока.
+            // Обход НЕ использовать
+            //  CheckForIllegalCrossThreadCalls = false;
+
             //Образец кода запуска потока
+            //РЕКОМЕНДЫЕМЫЙ Способ
             new Thread(() =>
             {
-               // textBox1.Text = "12356";
-                textBox1.Text = testMetoch();
+                //РЕКОМЕНДЫЕМЫЙ Способ
+                Invoke((MethodInvoker)(() => // или использовать параметрв Action
+                { 
+              textBox1.Text = testMetoch();
+
+                 }));
+                // textBox1.Text = "12356";
+                // textBox1.Text = testMetoch();
             }).Start();
 
-            //Thread thread; thread = new Thread(
-            //  // delegate 
-            //  () => // лямба оператор
-            //     {
-            //       textBox1.Text = testMetoch();
+            
 
-            //     }
-            //    );
            
 
            // thread.Start();
             label1.Text = "Работа в отдельном потоке";
         }
 
+        /// <summary>
+        /// Паралельный запуск потоков
+        /// </summary>
+        void rabS_ThreadParaleiniyCall()
+        {
+            Parallel.Invoke(
+                () =>
+                {
+                    new Thread(() =>
+                    {
+                        //РЕКОМЕНДЫЕМЫЙ Способ
+                        Invoke((MethodInvoker)(() => // или использовать параметрв Action
+                        {
+                            textBox1.Text = testMetoch();
+
+                        }));
+                        
+                    }).Start();
+                },
+                //запуск паралельного потока
+                () =>
+                {
+                    new Thread(() =>
+                    {
+                        //РЕКОМЕНДЫЕМЫЙ Способ
+                        Invoke((MethodInvoker)(() => // или использовать параметрв Action
+                        {
+                            label1.Text = $"Запустился паральный поток{PoluchenieDataTime()}";
+
+                        }));
+                        
+                    }).Start();
+                }
+                );
+        }
+
+        /// <summary>
+        /// Тестовой метод с циклом и слипом
+        /// </summary>
+        /// <returns></returns>
          string testMetoch()
         {
             string itog = "";
