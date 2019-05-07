@@ -6,13 +6,15 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace XpuctAPP
 {
+
+    delegate int DelegatSumInt(int x, int y);
     public partial class Form1 : Form
     {
         public Form1()
@@ -47,11 +49,9 @@ namespace XpuctAPP
              rabS_Thread(); // ошибка
             // rabS_Thread2(); //Работает
 
+            //Чтение файла с помощью стрима
 
-            //new Thread(() =>
-            //{
-            //    label1.Text = "12356";
-            //}).Start();
+          //  }
 
         
 
@@ -95,7 +95,10 @@ namespace XpuctAPP
             //в лэйбл записываем полученные данные из консоли.
         }
 
+        string pathZoobr = @"C:\Users\Dim\Desktop\зубр.txt";
         string path = @"C:\Users\Dim\Desktop\1233.txt";
+        string path12 = @"C:\Users\Dim\Desktop\reges.txt";
+        string path1 = @"C:\Users\Dim\Desktop\29599998716.pdf";
         string pathSavee = @"C:\Users\Dim\Desktop\1233\saveFile.txt";
         string pathЬщмуу = @"C:\Users\Dim\Desktop\1233\temp.txt";
 
@@ -145,7 +148,7 @@ namespace XpuctAPP
         {
             bool marker = false;
 
-           // string path = @"C:\Users\Dim\Desktop\1233.txt";
+            // string path = @"C:\Users\Dim\Desktop\1233.txt";
 
             string path1 = textBox1.Text;
 
@@ -155,11 +158,11 @@ namespace XpuctAPP
                 label1.Text = PoluchenieDataTime();
                 marker = true;
             }
-            
+
             else
             {
                 textBox1.Text = "Данный файл не существует!";
-                 label1.Text = PoluchenieDataTime();
+                label1.Text = PoluchenieDataTime();
             }
 
             return marker;
@@ -177,7 +180,7 @@ namespace XpuctAPP
         /// </summary>
         /// <param name="SorcePath_">Какой файл копируем</param>
         /// <param name="SavePath">Куда файл копируем</param>
-       public void CoppyFail(string SorcePath_, string SavePath)
+        public void CoppyFail(string SorcePath_, string SavePath)
         {
             try
             {
@@ -185,11 +188,11 @@ namespace XpuctAPP
                 textBox1.Text = $"Копировали  из {SorcePath_} в {SavePath}";
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 textBox1.Text = $"ОШИБКА  При копировании файла \t\n {ex}";
             }
-            
+
         }
 
         /// <summary>
@@ -223,7 +226,7 @@ namespace XpuctAPP
                 textBox1.Text = $"Произошло Удаление файла \t\n {path_}";
             }
 
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 textBox1.Text = $"ОШИБКА \t\n {ex}";
             }
@@ -234,7 +237,7 @@ namespace XpuctAPP
         /// </summary>
         /// <param name="path">Путьдля создания нужной папки</param>
         /// <returns></returns>
-       public bool CreateFile(string path)
+        public bool CreateFile(string path)
         {
             bool otvet = false;
             try
@@ -244,19 +247,19 @@ namespace XpuctAPP
                 textBox1.Text = $"Созданна котегория {path}";
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 textBox1.Text = $"ОШИБКА  При создании категории \t\n {ex}";
 
             }
-           
+
 
             return otvet;
         }
 
-       public void readFile(string path)
+        public void readFile(string path)
         {
-           string textt= File.ReadAllText(path);
+            string textt = File.ReadAllText(path);
 
             textBox1.Text = textt;
 
@@ -272,35 +275,198 @@ namespace XpuctAPP
 
             ts.Add(a);
 
-          //  var ff = new string[] {a};
+            //  var ff = new string[] {a};
 
             try
             {
                 File.WriteAllLines(pathЬщмуу, ts);
-                
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 textBox1.Text = $"ОШИБКА  При записи файла \t\n {ex}";
             }
         }
 
 
-      public  string PoluchenieDataTime()
-        {
-          //  DateTime dateTime = new DateTime();
+        #endregion
 
-           string dateTime = DateTime.Now.ToString();
+        /// <summary>
+        /// Получение даты и времени.
+        /// </summary>
+        /// <returns></returns>
+        public string PoluchenieDataTime()
+        {
+            //  DateTime dateTime = new DateTime();
+
+            string dateTime = DateTime.Now.ToString();
 
             return dateTime;
         }
 
-        #endregion 
-       
+        /// <summary>
+        /// Чтение из текстового файла. С помощью StreamReader
+        /// </summary>
+        public string chenueFailaStream
+            ()
+        {
+            string line;
+        using (StreamReader reader = new StreamReader(path12, Encoding.Default) )
+        {
+
+                line = reader.ReadToEnd(); ;
+                //while ((line = sr.ReadLine()) != null)
+                //{
+                //    Console.WriteLine(line);
+                //}
+
+                 textBox1.Text = line;
+            }
+            return line;
+        }
+      
+        /// <summary>
+        /// Чтение из текстового файла  С передачей параметра нахождения файла.
+        /// </summary>
+        /// <param name="str">Путь к файлу</param>
+        /// <returns></returns>
+        public string chenueFailaStreamParams(string str)  
+        {
+            string line;
+            using (StreamReader reader = new StreamReader(str, Encoding.Default))
+            {
+                line = reader.ReadToEnd(); ;
+            }
+            return line;
+        }
+
+        /// <summary>
+        /// Запись файла в файл(Stream)
+        /// </summary>
+        public void ZapisFaila()
+        {
+            //указываем куда записываем, перезапись, кодировку
+            using(StreamWriter sw = new StreamWriter(pathЬщмуу,true,Encoding.UTF8))
+            {
+                sw.WriteLine(DateTime.Now);
+                sw.WriteLine(textBox1.Text);
+            }
+        }
+
+        public void ZapisFailaParams(string pah_, string textContent)
+        {
+            //указываем куда записываем, перезапись, кодировку
+            using (StreamWriter sw = new StreamWriter(pah_, true, Encoding.UTF8))
+            {
+                sw.WriteLine(DateTime.Now);
+                sw.WriteLine(textContent);
+            }
+        }
+
+        /// <summary>
+        ///Регулярный метод №1 поиск по маске
+        /// </summary>
+        public void RabRegex()
+        {
+
+            //string line = "Какой-то текст, который от другого текста не отличается от другого текст.";
+            string line = chenueFailaStream();
+
+            Regex regex = new Regex("030000000231");
+
+            MatchCollection match = regex.Matches(line);
+
+            textBox1.Text = "\n";
+            string tempZ = $"Количество совпадения: {match.Count.ToString()}";
+            textBox1.Text += tempZ;
+
+            
+        }
+
+        /// <summary>
+        /// Поиск с помощью регулярного выражения
+        /// </summary>
+        public void RabRegexInZnach()
+        {
+            //где ищем
+            string line = chenueFailaStream();
+
+            //Что ищем
+            string tempZnach = textBox2.Text;
+
+            //маска поиска
+            Regex regex = new Regex(tempZnach);
+
+           // сохраняем результат поиска
+            MatchCollection match = regex.Matches(line);
+
+            //сохранение и вывод полученных  значений
+            textBox1.Text = "\n";
+            string tempZ = $"Искомое {tempZnach}\nКоличество совпадения: {match.Count.ToString()}";
+            textBox1.Text += tempZ;
+
+            //поиск пробелов > 1
+           // string pattern = @"\s+"; //ищем пробелы которые больше 1.
+            string pattern = @"\s+"; //ищем пробелы которые больше 1.
+            //string zamenProbel = " "; //на что заменяем
+            string zamenProbel = " *"; //на что заменяем
+            Regex regex1 = new Regex(pattern);
+            string znach1 = regex1.Replace(line,zamenProbel); //где ищим, на что меняем
+            string tempZ123 = $"Ищем в {tempZnach}\nКоличество замененных побелов: {znach1}";
+
+            ZapisFailaParams(path, tempZ);
+            //ZapisFailaParams(path, tempZ123); // записть в лог
+
+        }
+
+        public void RabRegexInZnach2()
+        {
+           string tempSorse = chenueFailaStreamParams(pathZoobr);
+
+            string tempZnach = new Regex(@"\s+").Replace(tempSorse,","); //Ищем все пробелы которые больше 1-го и заменяем их на 1 пробел " " 
+
+            textBox1.Text = tempZnach;
+        }
+
+
+        public void ParseCorsDolarsRegex()
+        {
+            string line;
+            string datee = DateTime.Now.ToLongTimeString().ToString();
+            string nameFile = "XML_daily_" + "datee" + ".xml";
+            using (WebClient wc = new WebClient() )
+            {
+                line = wc.DownloadString("http://www.cbr.ru/scripts/XML_daily.asp");
+                wc.DownloadFile("http://www.cbr.ru/scripts/XML_daily.asp", nameFile);
+            }
+            label1.Text = line;
+        }
+
+        //лямба методы
+        public void StartLambaMetoht()
+        {
+            textBox1.Text += "Метод делегата. \nСуммируем2 числа ";
+           DelegatSumInt SumaXY = (x, y) => x + y;
+
+            textBox1.Text += $"Результаты сложения:{SumaXY(10,25).ToString()}";
+
+        //список параметров,
+        }
+
         //Кнопка выход
+
         private void Button3_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        //Кнопка найти
+        private void Button4_Click(object sender, EventArgs e)
+        {
+            //RabRegexInZnach(); // п
+            //RabRegexInZnach2();
+
+            ParseCorsDolarsRegex(); // Спасрить данные по api 
         }
     }
 }
